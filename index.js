@@ -107,11 +107,33 @@ async function run() {
       res.send(result);
     });
     // get  id based to doss NOT WORKING
-    app.get("/todos/:id", async (req, res) => {
+    app.get("/updateTodo/:id", async (req, res) => {
       const id = req.params.id;
       console.log("received id:", id);
       const query = { _id: new ObjectId(id) };
       const result = await taskCollections.findOne(query);
+      res.send(result);
+    });
+
+    // PUT To update
+    app.put("/todos/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateTaskInfo = req.body;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const finalUpdateInfo = {
+        $set: {
+          title: updateTaskInfo.title,
+          description: updateTaskInfo.description,
+          deadline: updateTaskInfo.deadline,
+          priority: updateTaskInfo.priority,
+        },
+      };
+      const result = await taskCollections.updateOne(
+        query,
+        finalUpdateInfo,
+        options
+      );
       res.send(result);
     });
 
