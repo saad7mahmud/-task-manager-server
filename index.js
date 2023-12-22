@@ -81,7 +81,7 @@ async function run() {
       );
       res.send(result);
     });
-    //   Make Completed
+    //   Make Complete
     app.patch("/todos/completed/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
